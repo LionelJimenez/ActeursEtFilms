@@ -1,0 +1,203 @@
+﻿<Window x:Class="ActeursETFilms.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:Local="clr-namespace:ActeursETFilms"
+        Background="Cornsilk"
+        Title="MainWindow" Height="456" Width="830" Loaded="Window_Loaded" Language="fr-BE" ResizeMode="NoResize">
+        
+    <Window.Resources>
+        <Local:ClassImageConverter x:Key="imageConverter" />
+        <Local:ClassAfficheConverter x:Key="afficheConverter" />
+        
+        <DataTemplate x:Key="hTempl">
+            <GroupBox Width="152" Height="40" Margin="3" Template="{StaticResource GBTemplate}" BorderBrush="{x:Null}">
+                <GroupBox.BitmapEffect>
+                    <OuterGlowBitmapEffect GlowColor="Green" GlowSize="100" Noise="1" />
+                </GroupBox.BitmapEffect>
+
+                <StackPanel Orientation="Horizontal">
+                    <StackPanel>
+                        <TextBlock Text="{Binding Path= nom}" Foreground="Blue"/>
+                        <TextBlock Text="{Binding Path= prenom}" Foreground="Blue"/>
+                    </StackPanel>
+                    <StackPanel>
+                        <Image  Source="{Binding Path= photo, Converter={StaticResource imageConverter}}" Margin="3" Width="20" Height="20"></Image>
+                    </StackPanel>
+                </StackPanel>
+            </GroupBox>
+        </DataTemplate>
+
+        <DataTemplate x:Key="fTempl"> 
+        <GroupBox Width="152" Height="40" Margin="3" Template="{StaticResource GBTemplate}" BorderBrush="{x:Null}">
+            <GroupBox.BitmapEffect>
+                <OuterGlowBitmapEffect GlowColor="Green" GlowSize="100" Noise="1" />
+            </GroupBox.BitmapEffect>
+
+            <StackPanel Orientation="Horizontal">
+                <StackPanel>
+                    <TextBlock Text="{Binding Path= nom}" Foreground="Pink"/>
+                    <TextBlock Text="{Binding Path= prenom}" Foreground="Pink"/>
+                </StackPanel>
+                <StackPanel>
+                    <Image  Source="{Binding Path= photo, Converter={StaticResource imageConverter}}" Margin="3" Width="20" Height="20"></Image>
+                </StackPanel>
+            </StackPanel>
+        </GroupBox>
+        </DataTemplate>
+        
+
+        <ControlTemplate x:Key="GBTemplate" TargetType="{x:Type GroupBox}">
+            <Border BorderBrush="Black" BorderThickness="1" CornerRadius="5"
+        Background="Gray" TextBlock.TextAlignment="Center" TextBlock.FontSize="11" 
+        TextBlock.FontStyle="Italic" TextBlock.FontWeight="Medium" Name="Border">
+                
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="0.4*"/>
+                        <RowDefinition Height="0.6*"/>
+                    </Grid.RowDefinitions>
+
+                    <Rectangle Grid.Row="0" Margin="2,2,2,0" RadiusX="5" RadiusY="5">
+                        <Rectangle.Fill>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                <LinearGradientBrush.GradientStops>
+                                    <GradientStopCollection>
+                                        <GradientStop Color="#ccffffff" Offset="0" />
+                                        <GradientStop Color="#00ffffff" Offset="1" />
+                                    </GradientStopCollection>
+                                </LinearGradientBrush.GradientStops>
+                            </LinearGradientBrush>
+                        </Rectangle.Fill>
+                    </Rectangle>
+                    <ContentPresenter Grid.Row="0" Grid.RowSpan="2" VerticalAlignment="center" 
+                HorizontalAlignment="center" TextElement.Foreground="Black"/>
+                </Grid>
+            </Border>
+            <ControlTemplate.Triggers>
+                <EventTrigger RoutedEvent="MouseEnter">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ColorAnimation Storyboard.TargetName="Border" Storyboard.TargetProperty="Background.Color" From="Gray" To="white" Duration="0:0:0.7" AutoReverse="True"></ColorAnimation>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+                <EventTrigger RoutedEvent="MouseLeave">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ColorAnimation Storyboard.TargetName="Border" Storyboard.TargetProperty="Background.Color" To="Gray" Duration="0:0:0"></ColorAnimation>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+                <EventTrigger RoutedEvent="MouseDown">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ColorAnimation Storyboard.TargetName="Border" Storyboard.TargetProperty="Background.Color" From="Gray" To="Black" Duration="0:0:0.3" AutoReverse="True"></ColorAnimation>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
+        <Local:DoubleTemplate FTempl="{StaticResource fTempl}" HTempl="{StaticResource hTempl}" x:Key="DblConverter"/>
+    </Window.Resources>
+    
+    
+    
+    <Grid Name="G1">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="15"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+       </Grid.RowDefinitions>
+       
+       <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="200"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        
+        <Menu Grid.ColumnSpan="3" Grid.Row="0" Grid.Column="0">
+            <MenuItem Header="ACTEURS FILMS">
+            </MenuItem>
+        </Menu>
+        <GroupBox Grid.Row="2" Grid.Column="0" Header="Liste des Acteurs" BorderBrush="Gray" BorderThickness="3">
+
+                <ListBox Name="LBActeurs" ItemTemplateSelector="{StaticResource DblConverter}"  SelectionChanged="LBActeurs_SelectionChanged" Background="Cornsilk" Focusable="True">
+                </ListBox>
+
+        </GroupBox>
+
+        <StackPanel Grid.Row="3" Grid.Column="0">
+            <GroupBox Header="Grouper par sexe" BorderBrush="Gray" BorderThickness="3">
+                <GroupItem>
+                    <StackPanel Orientation="Horizontal">
+                        <Button Name="BtnGrouper"  HorizontalAlignment="Left" Margin="10" TextElement.FontSize="12" Click="BtnGrouper_Click" Template="{StaticResource ButtonTemplate}">Grouper</Button>
+                        <Button Name="BtnNPGrouper" HorizontalAlignment="Right" Margin="10" TextElement.FontSize="12" Click="BtnNPGrouper_Click" Template="{StaticResource ButtonTemplate}">Ne pas Grouper</Button>
+                    </StackPanel>
+                </GroupItem>
+            </GroupBox>
+            <GroupBox Header="Filtrer par Age" BorderBrush="Gray" BorderThickness="3">
+                <GroupItem>
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label HorizontalAlignment="Left" TextElement.FontSize="12">Age Minimum</Label>
+                            <TextBox HorizontalAlignment="Right" Width="70" Name="TbAgeFil"></TextBox>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+
+                            <Button HorizontalAlignment="Left" Margin="10" TextElement.FontSize="12" Name="ButFiltAge" Click="ButFiltAge_Click" Template="{StaticResource ButtonTemplate}">Filtrer</Button>
+                            <Button HorizontalAlignment="Right" Margin="10" TextElement.FontSize="12" Name="ButNOTFiltAge" Click="ButNOTFiltAge_Click" Template="{StaticResource ButtonTemplate}">Ne pas Filtrer</Button>
+                        </StackPanel>
+                    </StackPanel>
+                </GroupItem>
+            </GroupBox>
+        </StackPanel>
+        <GroupBox Header="Information sur l'acteur" Grid.Row="2" Grid.Column="1" BorderBrush="Gray" BorderThickness="3">
+            <GroupItem VerticalAlignment="Center" HorizontalAlignment="Center" Height="79" Width="207">
+                <StackPanel Orientation="Vertical" >
+                    <StackPanel Orientation="Horizontal">
+                        <Label HorizontalAlignment="Left" TextElement.FontSize="12">Nom de l'acteur</Label>
+                        <TextBox HorizontalAlignment="Right" Width="70" Name="TBNom" Text="{Binding ElementName=LBActeurs, Path=SelectedItem.nom}" >
+                        </TextBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label HorizontalAlignment="Left" TextElement.FontSize="12">Prenom de l'acteur</Label>
+                        <TextBox HorizontalAlignment="Right" Width="70" Name="TBPrnm" Text="{Binding ElementName=LBActeurs, Path=SelectedItem.prenom}"></TextBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label HorizontalAlignment="Left" TextElement.FontSize="12">Date de naissance</Label>
+                        <TextBox HorizontalAlignment="Right" Width="70" Name="TBDateN">
+                            <TextBox.Text>
+                                <Binding ElementName="LBActeurs" Path="SelectedItem.datenaiss" StringFormat="dd/MM/yyyy"/>
+                            </TextBox.Text>
+                        </TextBox>
+                    </StackPanel>
+                </StackPanel>
+            </GroupItem>
+        </GroupBox>
+        <GroupBox Header="Photo" Grid.Row="2" Grid.Column="2" BorderBrush="Gray" BorderThickness="3">
+            <Image Width="90" Height="90" Name="ImgLoc"  Source="{Binding ElementName=LBActeurs, Path=SelectedItem.photo, Converter={StaticResource imageConverter}}" MaxWidth="90" MaxHeight="90" HorizontalAlignment="Center" VerticalAlignment="Center"></Image>
+        </GroupBox>
+        <GroupBox Header="Filmographie" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" BorderBrush="Gray" BorderThickness="3">
+            <DataGrid Name="DGFilmograph" SelectionChanged="DGFilmograph_SelectionChanged" AutoGenerateColumns="False" GridLinesVisibility="None" RowHeight="30">
+                <DataGrid.Columns>   
+                    <DataGridTextColumn Header="Nom du film" Binding="{Binding Path = nom}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Année de sortie" Binding="{Binding Path = annee}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Réalisateur" Binding="{Binding Path = realisateur}"></DataGridTextColumn>
+                    <DataGridTemplateColumn Header="Affiche du film">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Image  Source="{Binding Path = nom, Converter={StaticResource afficheConverter}}" Width="30" Height="30"></Image>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </GroupBox>
+        <Button Content="Inserer" Grid.Column="1" Grid.Row="2" Height="23" HorizontalAlignment="Left" Margin="303,153,0,0" Name="test" VerticalAlignment="Top" Width="75" Click="test_Click" Template="{StaticResource ButtonTemplate}"/>
+        <Button Content="Supprimer" Grid.Column="1" Grid.Row="2" Height="23" HorizontalAlignment="Left" Margin="164,153,0,0" Name="button1" VerticalAlignment="Top" Width="75" Click="test_Click" Template="{StaticResource ButtonTemplate}"/>
+        <Button Content="Màj" Grid.Column="1" Grid.Row="2" Height="23" HorizontalAlignment="Left" Margin="19,153,0,0" Name="button2" VerticalAlignment="Top" Width="75" Click="test_Click" Template="{StaticResource ButtonTemplate}"/>
+    </Grid>
+</Window>

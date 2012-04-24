@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="filmacteursSQL" Class="DataClasses1DataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=.\SQLEXPRESS;AttachDbFilename=&quot;C:\Users\Xrdt\Desktop\BD pour Ex WPF\filmacteursSQL.mdf&quot;;Integrated Security=True;Connect Timeout=30;User Instance=True" SettingsObjectName="ActeursETFilms.Properties.Settings" SettingsPropertyName="filmacteursSQLConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.acteurs" Member="acteurs">
+    <Type Name="acteurs">
+      <Column Name="id_acteur" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="nom" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="prenom" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="sexe" Type="System.String" DbType="NVarChar(1) NOT NULL" CanBeNull="false" />
+      <Column Name="datenaiss" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="photo" Type="System.String" DbType="NChar(50)" CanBeNull="true" />
+      <Association Name="acteurs_acteurs_films" Member="acteurs_films" ThisKey="id_acteur" OtherKey="id_acteur" Type="acteurs_films" />
+    </Type>
+  </Table>
+  <Table Name="dbo.acteurs_films" Member="acteurs_films">
+    <Type Name="acteurs_films">
+      <Column Name="id_acteur" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="id_film" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="acteurs_acteurs_films" Member="acteurs" ThisKey="id_acteur" OtherKey="id_acteur" Type="acteurs" IsForeignKey="true" />
+      <Association Name="films_acteurs_films" Member="films" ThisKey="id_film" OtherKey="id_film" Type="films" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.films" Member="films">
+    <Type Name="films">
+      <Column Name="id_film" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="nom" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="annee" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="realisateur" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Association Name="films_acteurs_films" Member="acteurs_films" ThisKey="id_film" OtherKey="id_film" Type="acteurs_films" />
+    </Type>
+  </Table>
+  <Function Name="dbo.LastId" Method="LastId">
+    <Parameter Name="x" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="y" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="res" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Return Type="System.Int32" />
+  </Function>
+</Database>
